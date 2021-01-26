@@ -1,7 +1,11 @@
-﻿<Window x:Class="DL.FontViewer.UI.Wpf.MainWindow"
+﻿<Window x:Class="FontViewer.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Windows Font Viewer" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FontViewer"
+        mc:Ignorable="d"
+        Title="Font Viewer" 
         Height="600" 
         Width="800">
     <Window.Resources>
@@ -9,12 +13,11 @@
             <Setter Property="FontFamily" Value="{Binding ElementName=FontList, Path=SelectedItem}" />
             <Setter Property="FontStyle" Value="{Binding Path=SelectedFontStyle}" />
             <Setter Property="FontWeight" Value="{Binding Path=SelectedFontWeight}" />
-            <Setter Property="Margin" Value="0 0 0 4" /> 
+            <Setter Property="Margin" Value="0 0 0 4" />
             <Setter Property="Text" Value="{Binding ElementName=SampleText, Path=Text}" />
             <Setter Property="TextWrapping" Value="Wrap" />
         </Style>
     </Window.Resources>
-
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200" />
@@ -30,9 +33,9 @@
                 Padding="0 0 0 10">
             <TextBox x:Name="SearchTextBox" 
                      ToolTip="Search fonts (ex: arial)" 
-                     KeyDown="SearchTextBox_KeyDown" />    
+                     KeyDown="SearchTextBox_KeyDown" />
         </Border>
-        
+
         <Border Grid.Row="0"
                 Grid.Column="1" 
                 Padding="10 0 0 10" 

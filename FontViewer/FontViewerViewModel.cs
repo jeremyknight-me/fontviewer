@@ -4,7 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 
-namespace DL.FontViewer.UI.Wpf
+namespace FontViewer
 {
     internal class FontViewerViewModel : INotifyPropertyChanged
     {

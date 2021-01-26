@@ -1,15 +1,17 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media.TextFormatting;
 
-namespace DL.FontViewer.UI.Wpf
+namespace FontViewer
 {
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
     public partial class MainWindow : Window
     {
         internal FontViewerViewModel ViewModel
         {
-            get { return this.DataContext as FontViewerViewModel;  }
+            get { return this.DataContext as FontViewerViewModel; }
         }
 
         public MainWindow()
