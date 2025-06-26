@@ -8,48 +8,46 @@ namespace FontViewer;
 
 internal class FontViewerViewModel : INotifyPropertyChanged
 {
-    private IEnumerable<FontFamily> fonts;
-
-    private FontStyle style;
-
-    private FontWeight weight;
+    private IEnumerable<FontFamily> _fonts;
+    private FontStyle _style;
+    private FontWeight _weight;
 
     public FontViewerViewModel()
     {
-        this.style = FontStyles.Normal;
-        this.weight = FontWeights.Normal;
-        this.fonts = System.Windows.Media.Fonts.SystemFontFamilies.OrderBy(x => x.Source);
+        _style = FontStyles.Normal;
+        _weight = FontWeights.Normal;
+        _fonts = System.Windows.Media.Fonts.SystemFontFamilies.OrderBy(x => x.Source);
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
 
     public IEnumerable<FontFamily> Fonts
     {
-        get { return this.fonts; }
+        get { return _fonts; }
         set
         {
-            this.fonts = value;
-            this.NotifyPropertyChanged("Fonts");
+            _fonts = value;
+            NotifyPropertyChanged("Fonts");
         }
     }
 
     public FontStyle SelectedFontStyle
     {
-        get { return this.style; }
+        get { return _style; }
         set
         {
-            this.style = value;
-            this.NotifyPropertyChanged("SelectedFontStyle");
+            _style = value;
+            NotifyPropertyChanged("SelectedFontStyle");
         }
     }
 
     public FontWeight SelectedFontWeight
     {
-        get { return this.weight; }
+        get { return _weight; }
         set
         {
-            this.weight = value;
-            this.NotifyPropertyChanged("SelectedFontWeight");
+            _weight = value;
+            NotifyPropertyChanged("SelectedFontWeight");
         }
     }
 
@@ -77,7 +75,7 @@ internal class FontViewerViewModel : INotifyPropertyChanged
     {
         if (this.PropertyChanged != null)
         {
-            this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
