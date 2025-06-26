@@ -4,81 +4,80 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 
-namespace FontViewer
+namespace FontViewer;
+
+internal class FontViewerViewModel : INotifyPropertyChanged
 {
-    internal class FontViewerViewModel : INotifyPropertyChanged
+    private IEnumerable<FontFamily> fonts;
+
+    private FontStyle style;
+
+    private FontWeight weight;
+
+    public FontViewerViewModel()
     {
-        private IEnumerable<FontFamily> fonts;
+        this.style = FontStyles.Normal;
+        this.weight = FontWeights.Normal;
+        this.fonts = System.Windows.Media.Fonts.SystemFontFamilies.OrderBy(x => x.Source);
+    }
 
-        private FontStyle style;
+    public event PropertyChangedEventHandler PropertyChanged;
 
-        private FontWeight weight;
-
-        public FontViewerViewModel()
+    public IEnumerable<FontFamily> Fonts
+    {
+        get { return this.fonts; }
+        set
         {
-            this.style = FontStyles.Normal;
-            this.weight = FontWeights.Normal;
-            this.fonts = System.Windows.Media.Fonts.SystemFontFamilies.OrderBy(x => x.Source);
+            this.fonts = value;
+            this.NotifyPropertyChanged("Fonts");
         }
+    }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public IEnumerable<FontFamily> Fonts
+    public FontStyle SelectedFontStyle
+    {
+        get { return this.style; }
+        set
         {
-            get { return this.fonts; }
-            set
-            {
-                this.fonts = value;
-                this.NotifyPropertyChanged("Fonts");
-            }
+            this.style = value;
+            this.NotifyPropertyChanged("SelectedFontStyle");
         }
+    }
 
-        public FontStyle SelectedFontStyle
+    public FontWeight SelectedFontWeight
+    {
+        get { return this.weight; }
+        set
         {
-            get { return this.style; }
-            set
-            {
-                this.style = value;
-                this.NotifyPropertyChanged("SelectedFontStyle");
-            }
+            this.weight = value;
+            this.NotifyPropertyChanged("SelectedFontWeight");
         }
+    }
 
-        public FontWeight SelectedFontWeight
+    public void FilterFonts(string filter)
+    {
+        string loweredFilter = filter.ToLower();
+
+        if (string.IsNullOrEmpty(filter))
         {
-            get { return this.weight; }
-            set
-            {
-                this.weight = value;
-                this.NotifyPropertyChanged("SelectedFontWeight");
-            }
+            this.Fonts = System.Windows.Media.Fonts.SystemFontFamilies
+                .AsParallel()
+                .OrderBy(x => x.Source);
         }
-
-        public void FilterFonts(string filter)
+        else
         {
-            string loweredFilter = filter.ToLower();
-
-            if (string.IsNullOrEmpty(filter))
-            {
-                this.Fonts = System.Windows.Media.Fonts.SystemFontFamilies
+            this.Fonts =
+                System.Windows.Media.Fonts.SystemFontFamilies
                     .AsParallel()
+                    .Where(x => x.Source.ToLower().Contains(loweredFilter))
                     .OrderBy(x => x.Source);
-            }
-            else
-            {
-                this.Fonts =
-                    System.Windows.Media.Fonts.SystemFontFamilies
-                        .AsParallel()
-                        .Where(x => x.Source.ToLower().Contains(loweredFilter))
-                        .OrderBy(x => x.Source);
-            }
         }
+    }
 
-        private void NotifyPropertyChanged(string propertyName)
+    private void NotifyPropertyChanged(string propertyName)
+    {
+        if (this.PropertyChanged != null)
         {
-            if (this.PropertyChanged != null)
-            {
-                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+            this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
