@@ -2,31 +2,21 @@ html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-h1:focus {
-    outline: none;
+fieldset {
+    font-size: 0.8rem;
 }
 
-a, .btn-link {
-    color: #0071c1;
+.font-preview {
+    border-collapse: collapse;
+    width: auto;
 }
+    .font-preview div {
+        padding: 0.5rem;
+    }
 
-.btn-primary {
-    color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
-}
-
-.valid.modified:not([type=checkbox]) {
-    outline: 1px solid #26b050;
-}
-
-.invalid {
-    outline: 1px solid red;
-}
-
-.validation-message {
-    color: red;
-}
+    .font-preview div:nth-child(even) {
+        background: #f3f3f3;
+    }
 
 #blazor-error-ui {
     background: lightyellow;
