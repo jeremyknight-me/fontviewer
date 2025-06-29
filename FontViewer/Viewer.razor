@@ -1,0 +1,72 @@
+@page "/viewer"
+@using Microsoft.AspNetCore.Components.Forms
+
+<fieldset>
+    <legend>Options</legend>
+    <div>
+        <div>
+            <InputFile OnChange="OnFontSelected" accept=".ttf,.otf,.woff,.woff2" />
+        </div>
+        <div style="margin-top: 0.5em;">
+            <label>Preview text:</label>
+            <textarea rows="3" style="width:100%" @bind="_previewText" />
+        </div>
+    </div>
+</fieldset>
+
+<style>
+    @@font-face
+    {
+        font-family: 'UserFont';
+        src: url('@_fontDataUrl');
+    }
+
+    .user-font {
+        font-family: 'UserFont', sans-serif;
+    }
+</style>
+
+@if (!string.IsNullOrEmpty(_fontDataUrl))
+{
+    <div class="font-preview">
+        @for (int i = 0; i < _sizes.Length; i++)
+        {
+           var size = _sizes[i];
+            <div class="user-font" style="font-size: @(size)rem;">
+                @_previewText
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p>Please select a font file to preview.</p>
+}
+
+@code {
+    private readonly decimal[] _sizes = [1.0m, 1.5m, 2m, 3m, 5m];
+    private string _previewText = "The quick brown fox jumps over the lazy dog. 1234567890";
+    private string _fontDataUrl;
+
+    private async Task OnFontSelected(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        if (file is not null)
+        {
+            using var stream = file.OpenReadStream(maxAllowedSize: 5 * 1024 * 1024);
+            using var ms = new System.IO.MemoryStream();
+            await stream.CopyToAsync(ms);
+            var base64 = Convert.ToBase64String(ms.ToArray());
+            var ext = System.IO.Path.GetExtension(file.Name).ToLower();
+            var mime = ext switch
+            {
+                ".ttf" => "font/ttf",
+                ".otf" => "font/otf",
+                ".woff" => "font/woff",
+                ".woff2" => "font/woff2",
+                _ => "application/octet-stream"
+            };
+            _fontDataUrl = $"data:{mime};base64,{base64}";
+        }
+    }
+}
